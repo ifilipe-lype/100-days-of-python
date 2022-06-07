@@ -2,6 +2,11 @@ from turtle import Turtle
 
 
 STARTING_POSITION = [(0, 0), (-20, 0), (-40, 0)]
+MOVE_DISTANCE = 20
+UP = 90
+RIGHT = 0
+DOWN = 270
+LEFT = 180
 
 
 class Snake:
@@ -9,6 +14,7 @@ class Snake:
         """Creates a new turtle shape (snake) and print it to the screen"""
         self.segments = []
         self.create_snake()
+        self.head_segment: Turtle = self.segments[0]
 
     def create_snake(self):
         """Creates the initial snake's body"""
@@ -30,4 +36,21 @@ class Snake:
 
             segment.goto(next_segment.position())
 
-        head_segment.forward(20)
+        head_segment.forward(MOVE_DISTANCE)
+
+    def up(self):
+        if self.head_segment.heading() != DOWN:
+            self.head_segment.setheading(UP)
+
+    def right(self):
+        if self.head_segment.heading() != LEFT:
+            self.head_segment.setheading(RIGHT)
+
+    def down(self):
+        if self.head_segment.heading() != UP:
+            self.head_segment.setheading(DOWN)
+
+    def left(self):
+        if self.head_segment.heading() != RIGHT:
+            self.head_segment.setheading(LEFT)
+
