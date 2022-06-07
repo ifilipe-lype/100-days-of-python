@@ -5,7 +5,6 @@ from scoreboard import Scoreboard
 from snake import Snake
 from food import Food
 
-
 # screen setup
 screen = Screen()
 screen.setup(width=600, height=600)
@@ -34,5 +33,8 @@ while game_is_on:
         food.refresh()
         scoreboard.increase_score()
 
+    if snake.head_segment.xcor() < -280 or snake.head_segment.xcor() > 280 or snake.head_segment.ycor() < -280 or snake.head_segment.ycor() > 280:
+        game_is_on = False
+        scoreboard.game_over()
 
 screen.exitonclick()
