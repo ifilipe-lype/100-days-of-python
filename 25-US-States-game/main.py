@@ -1,3 +1,4 @@
+from operator import not_
 import turtle
 import pandas as pd
 
@@ -40,6 +41,16 @@ while game_on and len(answered_states) <= 50:
         answered_states.append(answer_state)
     else:
         pass
+
+not_answered_states = []
+
+for state in state_cors_data.state:
+    if state not in answered_states:
+        not_answered_states.append(state)
+
+pd.DataFrame({
+    "States to learn": not_answered_states
+}).to_csv("states_to_learn.csv")
 
 
 screen.mainloop()
