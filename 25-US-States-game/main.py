@@ -18,8 +18,8 @@ answered_states = []
 
 game_on = True
 
-while game_on and len(answered_states) <= 2:
-    answer_state = screen.textinput(title="Guess the state", prompt="What's another state name ?")
+while game_on and len(answered_states) <= 50:
+    answer_state = screen.textinput(title=f"Guess the state {len(answered_states)}/50", prompt="What's another state name ?")
 
     if answer_state is None:
         game_on = False
