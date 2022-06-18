@@ -11,9 +11,15 @@ FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
-reps = 0;
+reps = 0
+timer = None
 
 # ---------------------------- TIMER RESET ------------------------------- # 
+def reset_timer():
+    window.after_cancel(timer)
+    title_label.config(text="Timer", fg=GREEN)
+    canvas.itemconfig(timer_text, text="00:00")
+    check_marks.config(text="")
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
@@ -42,11 +48,23 @@ def count_down(count):
         seconds = f"0{seconds}"
     canvas.itemconfig(timer_text, text=f"{minutes}:{seconds}")
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        global timer
+
+        timer = window.after(1000, count_down, count - 1)
+    else:
+        start_timer()
+        
+        marks = ""
+
+        for _ in range(reps // 2):
+            marks += "✔"
+
+        check_marks.config(text=marks)
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
 
+window.minsize(width=640, height=370)
 window.title("Pomodoro App")
 window.config(bg=YELLOW, padx=100, pady=50)
 
@@ -62,10 +80,10 @@ canvas.grid(column=1, row=1)
 start_btn = Button(text="start", highlightthickness=0, command=start_timer)
 start_btn.grid(column=0, row=2)
 
-reset_btn = Button(text="reset", highlightthickness=0)
+reset_btn = Button(text="reset", highlightthickness=0, command=reset_timer)
 reset_btn.grid(column=2, row=2)
 
-check_marks = Label(text="✔", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 30))
+check_marks = Label(text="", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 30))
 check_marks.grid(column=1, row=3)
 
 
