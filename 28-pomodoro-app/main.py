@@ -1,5 +1,6 @@
 from cgitb import text
 from ctypes import alignment
+from itertools import count
 from tkinter import Button, PhotoImage, Tk, Canvas, Label
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -14,9 +15,17 @@ LONG_BREAK_MIN = 20
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
+def start_timer():
+    count_down(WORK_MIN * 60)
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 
+def count_down(count):
+    minutes = count // 60
+    seconds = count % 60
+    canvas.itemconfig(timer_text, text=f"{minutes}:{seconds}")
+    if count > 0:
+        window.after(1000, count_down, count - 1)
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -30,10 +39,10 @@ title_label.grid(column=1, row=0)
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
 tomato_img = PhotoImage(file="tomato.png")
 canvas.create_image(100, 112, image=tomato_img)
-canvas.create_text(103, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
+timer_text = canvas.create_text(103, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(column=1, row=1)
 
-start_btn = Button(text="start", highlightthickness=0)
+start_btn = Button(text="start", highlightthickness=0, command=start_timer)
 start_btn.grid(column=0, row=2)
 
 reset_btn = Button(text="reset", highlightthickness=0)
@@ -41,9 +50,6 @@ reset_btn.grid(column=2, row=2)
 
 check_marks = Label(text="✔", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 30))
 check_marks.grid(column=1, row=3)
-
-
-
 
 
 window.mainloop()
