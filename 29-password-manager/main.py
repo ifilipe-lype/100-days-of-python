@@ -1,5 +1,5 @@
-from tkinter import END, Button, Entry, Tk, Canvas, PhotoImage, Label
-
+from tkinter import END, Button, Entry, Tk, Canvas, PhotoImage, Label, messagebox
+from turtle import tilt
 
 
 # CONSTANTS VALUES
@@ -15,11 +15,21 @@ def save():
     email = email_entry.get()
     password = password_entry.get()
 
-    with open("data.txt", "a") as data_file:
-        data_file.write(f"{website} | {email} | {password}\n")
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showerror(title="Oops!", message="Please make sure you haven't left any fields empty.")
+        return
 
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
+    should_save = messagebox.askokcancel(
+        title=website,
+        message=f"These are the details entered:\nEmail: {email}\nPassword: {password}\nIs it ok to save ?"
+    )
+
+    if should_save:
+        with open("data.txt", "a") as data_file:
+            data_file.write(f"{website} | {email} | {password}\n")
+
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -54,7 +64,7 @@ website_entry.grid(row=1, column=1, columnspan=2)
 email_entry = Entry(width=35)
 email_entry.grid(row=2, column=1, columnspan=2)
 
-password_entry = Entry(width=21) 
+password_entry = Entry(width=21)
 password_entry.grid(row=3, column=1)
 
 # Buttons
