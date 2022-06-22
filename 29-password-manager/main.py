@@ -1,4 +1,4 @@
-from tkinter import Button, Entry, Tk, Canvas, PhotoImage, Label
+from tkinter import END, Button, Entry, Tk, Canvas, PhotoImage, Label
 
 
 
@@ -9,6 +9,18 @@ LOGO_IMG_PATH = 'logo.png'
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save():
+
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+
+    with open("data.txt", "a") as data_file:
+        data_file.write(f"{website} | {email} | {password}\n")
+
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -49,7 +61,9 @@ password_entry.grid(row=3, column=1)
 gen_pwd_btn = Button(text="Generate Password", bg="white")
 gen_pwd_btn.grid(row=3, column=2)
 
-add_btn = Button(text="Add", width=36, bg="white")
+add_btn = Button(text="Add", width=36, bg="white", command=save)
 add_btn.grid(row=4, column=1, columnspan=2)
+
+website_entry.focus()
 
 window.mainloop()
