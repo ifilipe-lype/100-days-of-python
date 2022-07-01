@@ -1,4 +1,4 @@
-from email import header
+from datetime import datetime
 from urllib import response
 import requests
 
@@ -18,9 +18,10 @@ graph_payload = {
     "color": "shibafu"
 }
 
+today = datetime.now()
 graph_track_payload = {
-    "date": "20220701",
-    "quantity": "5",
+    "date": today.strftime("%Y%m%d"),
+    "quantity": "7",
 }
 
 PIXELA_API_USER_URL = "https://pixe.la/v1/users"
