@@ -18,6 +18,10 @@ graph_payload = {
     "color": "shibafu"
 }
 
+headers = {
+    "X-USER-TOKEN": user_payload.get("token")
+}
+
 today = datetime.now()
 graph_track_payload = {
     "date": today.strftime("%Y%m%d"),
@@ -38,10 +42,17 @@ GRAPH_API_URL = f"{PIXELA_API_USER_URL}/{user_payload.get('username')}/graphs"
 # print(response.json())
 
 # Creates a track on a graph
-response = requests.post(url=f"{GRAPH_API_URL}/{graph_payload.get('id')}", json=graph_track_payload, headers={
-    "X-USER-TOKEN": user_payload.get("token")
-});
+# response = requests.post(url=f"{GRAPH_API_URL}/{graph_payload.get('id')}", json=graph_track_payload, headers={
+#     "X-USER-TOKEN": user_payload.get("token")
+# });
 
-print(response.json())
+# print(response.json())
 
+# Updates a graph's track
+# response = requests.put(url=f"{GRAPH_API_URL}/{graph_payload.get('id')}/{today.strftime('%Y%m%d')}", json={ "quantity": "9"} , headers=headers)
+# print(response.text)
 
+# Delete a graph's track
+response = requests.delete(
+    url=f"{GRAPH_API_URL}/{graph_payload.get('id')}/{today.strftime('%Y%m%d')}", headers=headers)
+print(response.text)
