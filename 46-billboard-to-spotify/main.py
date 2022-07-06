@@ -14,8 +14,10 @@ load_dotenv()
 #     "Which year do you want to travel to? Type the date in this format YYYY-MM-DD: "
 # )
 
+date = "2000-08-26"
+
 #Scraping Billboard 100
-response = requests.get(f"https://www.billboard.com/charts/hot-100/2000-08-26")
+response = requests.get(f"https://www.billboard.com/charts/hot-100/{date}")
 soup = BeautifulSoup(response.text, 'html.parser')
 char_results = soup.find(name="div", class_="chart-results-list")
 
@@ -43,4 +45,17 @@ sp = spotipy.Spotify(
 )
 
 user_id = sp.current_user()["id"]
-print(user_id)
+
+
+#Searching Spotify for songs by title
+song_uris = []
+year = date.split("-")[0]
+for [song_author, song_title] in songs:
+    result = sp.search(q=f"track:{song_title} year:{year}", type="track")
+    try:
+        uri = result["tracks"]["items"][0]["uri"]
+        song_uris.append(uri)
+    except IndexError:
+        print(f"{song_title} doesn't exist in Spotify. Skipped.")
+
+print(song_uris)
