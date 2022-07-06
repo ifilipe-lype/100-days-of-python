@@ -15,6 +15,7 @@ load_dotenv()
 # )
 
 date = "2000-08-26"
+top = 10
 
 #Scraping Billboard 100
 response = requests.get(f"https://www.billboard.com/charts/hot-100/{date}")
@@ -27,11 +28,18 @@ song_cards = char_results.select(
 
 songs = []
 
+counter = 0;
 for song_card in song_cards:
+    
     song_title = song_card.find(name="h3", id="title-of-a-story").getText().strip()
     song_owner = song_card.find(name="span", class_="c-label").getText().strip()
 
     songs.append([song_owner, song_title])
+
+    counter += 1;
+
+    if counter >= top:
+        break;
 
 #Spotify Authentication
 sp = spotipy.Spotify(
@@ -58,4 +66,6 @@ for [song_author, song_title] in songs:
     except IndexError:
         print(f"{song_title} doesn't exist in Spotify. Skipped.")
 
-print(song_uris)
+#Creating a new private playlist in Spotify
+playlist = sp.user_playlist_create(user=user_id, name=f"{date} Billboard 100", public=False)
+print(playlist)
