@@ -1,6 +1,14 @@
-from bs4 import BeautifulSoup
+import spotipy
 import requests
+import os
 
+
+from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+from spotipy.oauth2 import SpotifyOAuth
+
+# Loads .env data into os.environ
+load_dotenv()
 
 # date = input(
 #     "Which year do you want to travel to? Type the date in this format YYYY-MM-DD: "
@@ -23,4 +31,16 @@ for song_card in song_cards:
 
     songs.append([song_owner, song_title])
 
-print(songs);
+#Spotify Authentication
+sp = spotipy.Spotify(
+    auth_manager=SpotifyOAuth(
+        scope="playlist-modify-private",
+        redirect_uri="http://example.com",
+        client_id=os.environ.get("SPOTIFY_CLIENT_ID"),
+        client_secret=os.environ.get("SPOTIFY_CLIENT_SECRET"),
+        cache_path="token.txt"
+    )
+)
+
+user_id = sp.current_user()["id"]
+print(user_id)
