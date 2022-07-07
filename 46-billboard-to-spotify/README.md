@@ -22,5 +22,5 @@ SPOTIFY_REDIRECTION_URI=http://example.com
 1. On the first run your browse will open up on spotify's authorization page
 2. You will be redirected to another page (example.com) you must copy the entire url and past it into the terminal (it will be prompting you for it)
 ```bash
-python3 main.py YYYY-MM-DD
+python3 main.py
 ```
